@@ -114,7 +114,7 @@
         <!-- <uri/> -->
       </address>
     </author>
-	<date year="2016"/>
+	<date year="2017"/>
 
     <area/>
 
@@ -476,19 +476,49 @@ ACL->PBR->BGP_FS in   ->  Lookup  ->  PBR->QoS->I2RS->BGP_FS out
 	</section>
 
     <section anchor="IANA" title="IANA Considerations">
-    <t>This document requests a new type from the "BGP Transitive Extended Community Types" extended community registry. 
-	  This type name shall be 'FlowSpec'.
+	<section title="FlowSpec Transitive Extended Communities">
+        <t>
+	This document requests a new type from the "BGP Transitive Extended Community Types" extended community registry from the First Come First Served range. 
+	This type name shall be 'FlowSpec Transitive Extended Communities'.
 	</t>
-	<t>This document requests a new type from the "BGP Non-Transitive Extended Community Types" extended community registry. 
-	  This type name shall be 'FlowSpec'.
-	</t>
-	<t>This document requests creation of a new registry called "FlowSpec Extended Community Sub-Types". 
-	This registry contains values of the second octet (the "Sub-Type" field) of an extended community when the value of the first octet (the "Type" field) is to one of those allocated
-	in this document.</t>
-
 	<t>
-	Within this new registry, this document requests a new subtype (suggested value 0x02), this sub-type shall be named "interface-set".
+	This document requests creation of a new registry called "FlowSpec Transitive Extended Community Sub-Types". 
+	This registry contains values of the second octet (the "Sub-Type" field) of an extended community when the value of the first octet (the "Type" field) is the value allocated in this document.
+	The registration procedure for values in this registry shall be First Come First Served.
 	</t>
+	</section>
+
+	<section title="FlowSpec Non-Transitive Extended Communities">
+	<t>
+	This document requests a new type from the "BGP Non-Transitive Extended Community Types" extended community registry from the First Come First Served range. 
+	This type name shall be 'FlowSpec Non-Transitive Extended Communities'.
+	</t>
+	<t>
+	This document requests creation of a new registry called "FlowSpec Non-Transitive Extended Community Sub-Types". 
+	This registry contains values of the second octet (the "Sub-Type" field) of an extended community when the value of the first octet (the "Type" field) is the value allocated in this document.
+	The registration procedure for values in this registry shall be First Come First Served.
+	</t>
+	</section>
+
+	<section title="FlowSpec interface-set Extended Community">
+	<t>
+	Within the two new registries above, this document requests a new subtype (suggested value 0x02). This sub-type
+	shall be named "interface-set", with a reference to this document.
+	</t>
+	</section>
+
+	<section title="Allocation Advice to IANA">
+	<t>
+	IANA is requested to allocate the values of the FlowSpec Transitive and Non-Transitive Extended Communities such
+	that their values are identical when ignoring the second high-order bit (Transitive).  See section 2, 
+	<xref target="RFC4360"/>.  An example allocation would be 0x09/0x49.
+	</t>
+	<t>
+	It is suggested to IANA that, when possible, allocations from the FlowSpec Transitive/Non-Transitive Extended
+	Community Sub-Types registries are made for transitive or non-transitive versions of features (section 2, 
+	<xref target="RFC4360"/>) that their code point in both registries is identical.
+	</t>
+	</section>
     </section>
   </middle>
 
