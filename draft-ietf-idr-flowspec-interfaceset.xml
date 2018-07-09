@@ -61,12 +61,6 @@
         <email>jhaas@juniper.net</email>
       </address>
     </author>
-    <author fullname="Lucy Yong" initials="L" surname="Yong">
-      <organization>Huawei</organization>
-      <address>
-        <email>lucy.yong@huawei.com</email>
-      </address>
-    </author>
     <date year="2018"/>
     <area/>
     <workgroup>Inter-Domain Routing</workgroup>
@@ -312,7 +306,10 @@
     </section>
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-	Authors would like to thanks Wim Hendrickx and Robert Raszuk for their valuable comments.
+	The authors would like to thank Lucy Yong for her prior contributions on this document.
+      </t>
+      <t>
+	The authors would like to thanks Wim Hendrickx and Robert Raszuk for their valuable comments.
       </t>
     </section>
     <section anchor="IANA" title="IANA Considerations">
