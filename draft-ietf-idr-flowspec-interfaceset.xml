@@ -1,46 +1,27 @@
-<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY RFC5575 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5575.xml">
-<!ENTITY RFC4360 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4360.xml">
-<!ENTITY RFC4684 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4684.xml">
-<!ENTITY RFC7911 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7911.xml">
-<!ENTITY RTCNORT SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.ietf-idr-rtc-no-rt.xml">
-<!ENTITY FLOWSPECV2 SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.hares-idr-flowspec-v2">
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>  <!-- Required for schema validation and schema-aware editing -->
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
 ]>
-<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
-<!-- used by XSLT processors -->
-<!-- OPTIONS, known as processing instructions (PIs) go here. -->
-<!-- For a complete list and description of PIs,
-     please see http://xml.resource.org/authoring/README.html. -->
-<!-- Below are generally applicable PIs that most I-Ds might want to use. -->
-<?rfc strict="yes" ?>
-<!-- give errors regarding ID-nits and DTD validation -->
-<!-- control the table of contents (ToC): -->
-<?rfc toc="yes"?>
-<!-- generate a ToC -->
-<?rfc tocdepth="3"?>
-<!-- the number of levels of subsections in ToC. default: 3 -->
-<!-- control references: -->
-<?rfc symrefs="yes"?>
-<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
-<?rfc sortrefs="yes" ?>
-<!-- sort the reference entries alphabetically -->
-<!-- control vertical white space: 
-     (using these PIs as follows is recommended by the RFC Editor) -->
-<?rfc compact="yes" ?>
-<!-- do not start each main section on a new page -->
-<?rfc subcompact="no" ?>
-<!-- keep one blank line between list items -->
-<!-- end of popular PIs -->
-<rfc category="std" docName="draft-ietf-idr-flowspec-interfaceset-04" ipr="trust200902">
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-ietf-idr-flowspec-interfaceset-05"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
   <front>
     <title abbrev="flowspec-interfaceset">Applying BGP flowspec rules on a specific interface set</title>
     <author fullname="Stephane Litkowski" initials="S" surname="Litkowski">
-      <organization>Orange</organization>
+      <organization showOnFrontPage="true">Cisco</organization>
       <address>
-        <email>stephane.litkowski@orange.com</email>
-        <!-- <uri/> -->
+	<email>slitkows.ietf@gmail.com</email>
       </address>
     </author>
     <author fullname="Adam Simpson" initials="A" surname="Simpson">
@@ -67,14 +48,14 @@
         <email>lucy.yong@huawei.com</email>
       </address>
     </author>
-    <date year="2018"/>
+    <date year="2025"/>
     <area/>
     <workgroup>Inter-Domain Routing</workgroup>
     <!-- <keyword/> -->
     <abstract>
       <t>
 	The BGP Flow Specification (flowspec) Network Layer Reachability Information (BGP NLRI)
-	extension (<xref target="RFC5575"/>) is used to distribute traffic flow specifications into
+	extension (<xref target="RFC8955"/>) is used to distribute traffic flow specifications into
 	BGP.  The primary application of this extension is the distribution of traffic filtering
 	policies for the mitigation of distributed denial of service (DDoS) attacks.
       </t>
@@ -92,13 +73,18 @@
 	the BGP Flowspec "interface-set" Extended Communities.
       </t>
     </abstract>
-    <note title="Requirements Language">
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-      document are to be interpreted as described in <xref target="RFC2119"/>.</t>
-    </note>
   </front>
   <middle>
+    <section>
+      <name>Requirements Language</name>
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+	"SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT
+	RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+	interpreted as described in BCP 14 <xref target="RFC2119"/>
+	<xref target="RFC8174"/> when, and only when, they appear in
+	all capitals, as shown here.</t>
+    </section>
+
     <section anchor="problem-statement" title="Use case">
       <t>
 	While a network may provide connectivity to a homogenous class of users, it often provides
@@ -156,29 +142,31 @@
       </t>
       <t>
 	As an example, we can imagine the following design :
-	<list style="symbols">
-	  <t>
-	    Internet customer interfaces are associated with group-identifier 1.
-	  </t>
-	  <t>
-	    VPN customer interfaces are associated with group-identifier 2.
-	  </t>
-	  <t>
-	    All customer interfaces are associated with group-identifier 3.
-	  </t>
-	  <t>
-	    Peer interfaces are associated with group-identifier 4.
-	  </t>
-	  <t>
-	    Transit interfaces are associated with group-identifier 5.
-	  </t>
-	  <t>
-	    All external provider interfaces are associated with group-identifier 6.
-	  </t>
-	  <t>
-	    All interfaces are associated with group-identifier 7.
-	  </t>
-	</list>
+      </t>
+      <ul>
+	<li>
+	  Internet customer interfaces are associated with group-identifier 1.
+	</li>
+	<li>
+	  VPN customer interfaces are associated with group-identifier 2.
+	</li>
+	<li>
+	  All customer interfaces are associated with group-identifier 3.
+	</li>
+	<li>
+	  Peer interfaces are associated with group-identifier 4.
+	</li>
+	<li>
+	  Transit interfaces are associated with group-identifier 5.
+	</li>
+	<li>
+	  All external provider interfaces are associated with group-identifier 6.
+	</li>
+	<li>
+	  All interfaces are associated with group-identifier 7.
+	</li>
+      </ul>
+      <t>
 	If the service provider wants to deploy a specific inbound filtering on external provider
 	interfaces only, the provider can send the BGP flow specification using group-identifier 6
 	for the inbound direction.
@@ -218,17 +206,17 @@
       </artwork></figure>
       <t>
 	The flags are :
-	<list style="symbols">
-	  <t>
-	    O : if set, the flow specification rule MUST be applied in outbound direction to the
-	    interface set referenced by the following group-identifier.
-	  </t>
-	  <t>
-	    I : if set, the flow specification rule MUST be applied in inbound direction to the
-	    interface set referenced by the following group-identifier.
-	  </t>
-	</list>
       </t>
+      <ul>
+	<li>
+	  O : If set, the flow specification rule MUST be applied in outbound direction to the
+	  interface set referenced by the following group-identifier.
+	</li>
+	<li>
+	  I : If set, the flow specification rule MUST be applied in inbound direction to the
+	  interface set referenced by the following group-identifier.
+	</li>
+      </ul>
       <t>
 	Both flags can be set at the same time in the interface-set extended community leading to
 	flow rule to be applied in both directions.  An interface-set extended community with both
@@ -287,7 +275,7 @@
       <section title="Inter-domain Considerations">
 	<t>
 	  The Group Identifier used by the interface-set extended community has local significance to
-	  its provisioning Autonomous System.  While <xref target="RFC5575"/> permits inter-as
+	  its provisioning Autonomous System.  While <xref target="RFC8955"/> permits inter-as
 	  advertisement of flowspec NLRI, care must be taken to not accept these communities when they
 	  would result in unacceptable filtering policies.
 	</t>
@@ -304,7 +292,7 @@
     </section>
     <section anchor="Security" title="Security Considerations">
       <t>
-	This document extends the Security Considerations of <xref target="RFC5575"/> by permitting
+	This document extends the Security Considerations of <xref target="RFC8955"/> by permitting
 	flowspec filters to be selectively applied to subsets of network interfaces in a particular
 	direction.  Care must be taken to not permit the inadvertant manipulation of the
 	interface-set extended community to bypass expected traffic manipulation.
@@ -371,11 +359,12 @@
   </middle>
   <back>
     <references title="Normative References">
-      &RFC2119;
-      &RFC5575;
-      &RFC4360;
-      &RFC4684;
-      &RFC7911;
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4360.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4684.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7911.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8955.xml"/>
     </references>
     <!-- references title="Informative References">
     </references -->
