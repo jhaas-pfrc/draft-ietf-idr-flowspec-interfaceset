@@ -17,7 +17,7 @@
   xml:lang="en"
   version="3">
   <front>
-    <title abbrev="flowspec-interfaceset">Applying BGP flowspec rules on a specific interface set</title>
+    <title abbrev="flowspec-interfaceset">Applying BGP flowspec rules on a specific interface-set</title>
     <author fullname="Stephane Litkowski" initials="S" surname="Litkowski">
       <organization showOnFrontPage="true">Cisco</organization>
       <address>
@@ -37,7 +37,7 @@
       </address>
     </author>
     <author fullname="Jeffrey Haas" initials="J" surname="Haas">
-      <organization>Juniper Networks</organization>
+      <organization>HPE</organization>
       <address>
         <email>jhaas@juniper.net</email>
       </address>
@@ -114,7 +114,7 @@
     <section anchor="proposal" title="Interface specific filtering using BGP flowspec">
       <t>
 	The uses case detailed above require application of different BGP flowspec rules on
-	different sets of interfaces. 
+	different sets of interfaces.
       </t>
       <t>
 	We propose to introduce, within BGP flowspec, a traffic filtering scope that identifies a
@@ -125,18 +125,18 @@
 	to the network administrator to associate a particular meaning to a group identifier value
 	(e.g. group ID#1 associated to Internet customer interfaces).
 	The group identifier is a local interface property. Any interface may be associated with one
-	or more group identifiers using manual configuration. 
+	or more group identifiers using manual configuration.
       </t>
       <t>
 	When a filtering rule advertised through BGP flowspec must be applied only to particular
-	sets of interfaces, 
+	sets of interfaces,
 	the BGP flowspec BGP UPDATE will contain the identifiers associated with the relevant sets
-	of interfaces. 
+	of interfaces.
 	In addition to the group identifiers, it will also contain the direction the filtering rule
 	must be applied in (see <xref target="extct"/>).
       </t>
       <t>
-	Configuration of group identifiers associated to interfaces may change over time. 
+	Configuration of group identifiers associated to interfaces may change over time.
 	An implementation MUST ensure that the filtering rules (learned from BGP flowspec) applied
 	to a particular interface are always updated when the group identifier mapping is changing.
       </t>
@@ -186,7 +186,7 @@
 	interface-set". This document expands the definition of the Route Target extended
 	community to allow a new value of high order octet (Type field) to be 0x07 for the
 	transitive flowspec interface-set extended community, or 0x47 for the non-transitive
-	flowspec interface-set extended community.  These are in addition to the values specified in 
+	flowspec interface-set extended community.  These are in addition to the values specified in
 	<xref target="RFC4360"/>.
       </t>
       <t>
@@ -205,42 +205,47 @@
 
       </artwork></figure>
       <t>
+        The Autonmous System number should be the locally configured AS number, or AS_TRANS
+	(<xref target="RFC6793" section="9" sectionFormat="comma"/>) if the local AS number cannot
+	be encoded in two octets.  This AS number MAY be used by the BGP speaker for local policy
+	purposes.
+      </t>
+      <t>
 	The flags are :
       </t>
       <ul>
 	<li>
 	  O : If set, the flow specification rule MUST be applied in outbound direction to the
-	  interface set referenced by the following group-identifier.
+	  interface-set referenced by the following group-identifier.
 	</li>
 	<li>
 	  I : If set, the flow specification rule MUST be applied in inbound direction to the
-	  interface set referenced by the following group-identifier.
+	  interface-set referenced by the following group-identifier.
 	</li>
       </ul>
       <t>
 	Both flags can be set at the same time in the interface-set extended community leading to
-	flow rule to be applied in both directions.  An interface-set extended community with both
-	flags set to zero MUST be treated as an error and as consequence, the flowspec update MUST
-	be discarded. As having no direction indicated as no sense, there is no need to propagate
-	the filter informations in the network.
+        flow rule to be applied in both directions. An interface-set extended community with both
+        flags set to zero MUST be treated as an error and as consequence, the flowspec route is
+	malformed and MUST be given treat-as-withdraw behavior
+	(<xref target="RFC7606" section="2" sectionFormat="comma"/>).
       </t>
-      <!-- XXX JMH - discarded, or ignored/treat-as-withdraw? -->
       <t>
 	The Group Identifier is encoded as a 14-bit number, values 0..16383.
       </t>
       <t>
-	Multiple instances of the interface-set extended community may be present in a BGP update.
+	Multiple instances of the interface-set extended community may be present in a BGP UPDATE.
 	This may occur if the flowspec rule needs to be applied to multiple sets of interfaces.
       </t>
       <t>
-	Multiple instances of the extended community in a BGP update MUST be interpreted as a "OR" operation.
+	Multiple instances of the extended community in a BGP UPDATE MUST be interpreted as an "OR" operation.
 	For example, if a BGP UPDATE contains two interface-set extended communities with group ID 1
 	and group ID 2, the filter would need to be installed on interfaces belonging to Group ID 1
 	or Group ID 2.
       </t>
       <t>
 	Similar to using a Route Target extended community, route distribution of flowspec NLRI with
-	interface-set extended communities may be subject to constrained distribution as defined in 
+	interface-set extended communities may be subject to constrained distribution as defined in
 	<xref target="RFC4684"/>.
       </t>
     </section>
@@ -262,7 +267,7 @@
       <section title="Add-Paths">
 	<t>
 	  There are some cases where a particular BGP flowspec NLRI may be advertised to different
-	  interface groups with a different action. 
+	  interface groups with a different action.
 	  For example, a service provider may want to discard all ICMP traffic from customer interfaces
 	  to infrastructure addresses and want to rate-limit the same traffic when it comes from some
 	  internal platforms.  These particular cases require ADD-PATH (<xref target="RFC7911"/>) to
@@ -281,12 +286,12 @@
 	</t>
 	<t>
 	  Filtering of interface-set extended communities at Autonomous System border routers
-	  (ASBRs) may thus be desirable.  
+	  (ASBRs) may thus be desirable.
 	  <!-- XXX JMH - should we ignore an interface-set unless it's for an AS number that's us? -->
 	</t>
 	<t>
 	  Note that the default behavior without the interface-set feature would to have been to
-	  install the flowspec filter on all flowspec enabled interfaces.  
+	  install the flowspec filter on all flowspec enabled interfaces.
 	</t>
       </section>
     </section>
@@ -307,13 +312,13 @@
       <section title="FlowSpec Transitive Extended Communities">
 	<t>
 	  This document requests a new type from the "BGP Transitive Extended Community Types"
-	  extended community registry from the First Come First Served range. 
+	  extended community registry from the First Come First Served range.
 	  This type name shall be 'FlowSpec Transitive Extended Communities'.
 	  IANA has assigned the value 0x07 to this type.
 	</t>
 	<t>
 	  This document requests creation of a new registry called "FlowSpec Transitive Extended
-	  Community Sub-Types". 
+	  Community Sub-Types".
 	  This registry contains values of the second octet (the "Sub-Type" field) of an extended
 	  community when the value of the first octet (the "Type" field) is the value allocated in
 	  this document.
@@ -323,13 +328,13 @@
       <section title="FlowSpec Non-Transitive Extended Communities">
 	<t>
 	  This document requests a new type from the "BGP Non-Transitive Extended Community Types"
-	  extended community registry from the First Come First Served range. 
+	  extended community registry from the First Come First Served range.
 	  This type name shall be 'FlowSpec Non-Transitive Extended Communities'.
 	  IANA has assigned the value 0x47 to this type.
 	</t>
 	<t>
 	  This document requests creation of a new registry called "FlowSpec Non-Transitive Extended
-	  Community Sub-Types". 
+	  Community Sub-Types".
 	  This registry contains values of the second octet (the "Sub-Type" field) of an extended
 	  community when the value of the first octet (the "Type" field) is the value allocated in
 	  this document.
@@ -346,7 +351,7 @@
 	<t>
 	  IANA is requested to allocate the values of the FlowSpec Transitive and Non-Transitive
 	  Extended Communities such that their values are identical when ignoring the second
-	  high-order bit (Transitive).  See section 2, <xref target="RFC4360"/>. 
+	  high-order bit (Transitive).  See section 2, <xref target="RFC4360"/>.
 	</t>
 	<t>
 	  It is suggested to IANA that, when possible, allocations from the FlowSpec
@@ -361,12 +366,14 @@
     <references title="Normative References">
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4360.xml"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4684.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7606.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7911.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8955.xml"/>
     </references>
-    <!-- references title="Informative References">
-    </references -->
+    <references title="Informative References">
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4684.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6793.xml"/>
+    </references>
   </back>
 </rfc>
