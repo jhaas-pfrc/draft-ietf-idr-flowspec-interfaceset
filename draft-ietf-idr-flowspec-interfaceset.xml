@@ -42,12 +42,6 @@
         <email>jhaas@juniper.net</email>
       </address>
     </author>
-    <author fullname="Lucy Yong" initials="L" surname="Yong">
-      <organization>Huawei</organization>
-      <address>
-        <email>lucy.yong@huawei.com</email>
-      </address>
-    </author>
     <date year="2025"/>
     <area/>
     <workgroup>Inter-Domain Routing</workgroup>
@@ -375,5 +369,14 @@
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4684.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6793.xml"/>
     </references>
+    <section>
+      <name>Contributors</name>
+      <contact fullname="Lucy Yong" initials="L" surname="Yong">
+	<organization>Huawei</organization>
+	<!-- address>
+	  <email>lucy.yong@huawei.com</email>
+	</address -->
+      </contact>
+    </section>
   </back>
 </rfc>
